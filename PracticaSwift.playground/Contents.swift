@@ -134,12 +134,12 @@ class Mundial {
         self.seleccion = seleccion
     }
     
-    var toString : String {
+    var toString : Void {
         print("\n\nParticipantes :")
         for i in seleccion {
             print("\n\nEquipo : \(i.toString)")
             }
-        return seleccion.description
+        //return seleccion.description
     }
 }
 
@@ -150,13 +150,15 @@ class Seleccion {
     var country : Country
     var players : [String]
     var director : String
+    //var partidos : Game  // --> ejercicio 7
     
-    init (name : String = "", country : Country, players : [String] = [],director : String = ""){
+    init (name : String = "", country : Country, players : [String] = [],director : String = ""/*, partidos : Game*/){
         
         self.name = name
         self.country = country
         self.players = players
         self.director = director
+        //self.partidos = partidos
     }
     
     enum Country {
@@ -165,7 +167,7 @@ class Seleccion {
     
     
     // INTERPOLACIÓN DE STRING PARA RETORNAR TODOS LOS ATRIBUTOS
-    public var toString : String { return "\n\nSelección : \(name) \n - País : \(country) \n - Jugadores : \(players) \n - Técnico : \(director)"}
+    public var toString : String { return "\n\nSelección : \(name) \n - País : \(country) \n - Jugadores : \(players) \n - Técnico : \(director) \nPartidos "} //\(partidos.toString)
 }
 
 
@@ -178,18 +180,27 @@ class Seleccion {
 class Game {
     var equipoLocal : Bool
     var equipoVisitante : Bool
-    var resultado : String
+    var resultados : [String] = []
     var selecciones : [Seleccion]
     
-    
-    init(equipoLocal : Bool = false, equipoVisitante : Bool = false, resultado : String = "", selecciones : [Seleccion]) {
-        
+    init(equipoLocal : Bool = false, equipoVisitante : Bool = false,  selecciones : [Seleccion]) {
+
         self.equipoLocal = equipoLocal
         self.equipoVisitante = equipoVisitante
-        self.resultado = resultado
+        //self.resultados.append(resultados)
         self.selecciones = selecciones
 
     }
+    
+    /*var resultados : [String]  {
+        set(matches) {
+            self.resultados = resultados.append(matches)
+        }
+        get {
+            return resultados
+        }
+        
+    }*/
     
     var match : String  {
         var randomGoals1 : Int = Int.random(in: 0 ... 10)
@@ -199,10 +210,18 @@ class Game {
     }
     
     var toString : String {
-        
+
         return "\n\nPartido \(selecciones[0].country) - \(selecciones[1].country) \n\nPais : \(selecciones[0].country) \nLocal : \(equipoLocal) \n\nPais : \(selecciones[1].country) \nVisitante \(equipoVisitante) \n\n \(match)"
     }
 }
+
+
+/**8.- Generar de forma aleatoria, dentro de la clase Mundial, un listado de grupos con
+ un máximo de 4 selecciones por grupo, se puede crear una clase nueva Grupo que
+ contenga el nombre del grupo, listado de participantes y listado de partidos. Por
+ ejemplo: Grupo A España, Brasil, Francia, Alemania.*/
+
+
 
 
 var argentina = Seleccion(name: "Albiceleste", country: Seleccion.Country.Argentina, players : ["Messi","Lautaro", "Di maria"], director: "Luis Scaloni")
@@ -212,17 +231,21 @@ var espanya = Seleccion(name: "La Roja", country: Seleccion.Country.Espana, play
 var francia = Seleccion(name: "Les Blues", country: Seleccion.Country.Francia, players : ["Zidane","Mbappé", "Cherrie"], director: "Luc Besson")
 var japon = Seleccion(name: "Blue Samurays", country: Seleccion.Country.Japon, players : ["Yakusa","Fukunaga", "Mishi"], director: "Tadeo Hidetora")
 
-print(argentina.toString)
+//print(argentina.toString)
 
 var equipos = Mundial(seleccion: [argentina, brazil, holanda, espanya, francia, japon])
 
-var juegos = Game(equipoLocal: true, equipoVisitante: false, resultado: "0", selecciones: [japon, argentina])
+var juegos = Game(equipoLocal: true, equipoVisitante: false, selecciones: [japon, argentina])
 
+juegos.resultados.append(juegos.match)
 
 
 print(equipos.toString)
 
 
 print(juegos.toString)
+
+
+juegos.resultados.forEach{ print($0)}
 
 
