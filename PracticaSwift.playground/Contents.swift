@@ -168,6 +168,43 @@ class Seleccion {
     public var toString : String { return "\n\nSelección : \(name) \n - País : \(country) \n - Jugadores : \(players) \n - Técnico : \(director)"}
 }
 
+
+/**7.- Crear una clase para representar los partidos entre selecciones, deberá contener
+ atributos como equipo local, visitante y resultado como mínimo. Generar una lista
+ aleatoria de partidos entre la lista de selecciones anteriores y hacer un print de este
+ estilo por partido:
+ Partido: España 3 - 1 Brasil*/
+
+class Game {
+    var equipoLocal : Bool
+    var equipoVisitante : Bool
+    var resultado : String
+    var selecciones : [Seleccion]
+    
+    
+    init(equipoLocal : Bool = false, equipoVisitante : Bool = false, resultado : String = "", selecciones : [Seleccion]) {
+        
+        self.equipoLocal = equipoLocal
+        self.equipoVisitante = equipoVisitante
+        self.resultado = resultado
+        self.selecciones = selecciones
+
+    }
+    
+    var match : String  {
+        var randomGoals1 : Int = Int.random(in: 0 ... 10)
+        var randomGoals2 : Int = Int.random(in: 0 ... 10)
+
+        return "\n\nResultados : \(selecciones[0].country) - \(randomGoals1) - \(selecciones[1].country) \(randomGoals2)"
+    }
+    
+    var toString : String {
+        
+        return "\n\nPartido \(selecciones[0].country) - \(selecciones[1].country) \n\nPais : \(selecciones[0].country) \nLocal : \(equipoLocal) \n\nPais : \(selecciones[1].country) \nVisitante \(equipoVisitante) \n\n \(match)"
+    }
+}
+
+
 var argentina = Seleccion(name: "Albiceleste", country: Seleccion.Country.Argentina, players : ["Messi","Lautaro", "Di maria"], director: "Luis Scaloni")
 var brazil = Seleccion(name: "Canarihna", country: Seleccion.Country.Brazil, players : ["Neymar","Rodrygo", "Faustinho"], director: "Ronaldinho")
 var holanda = Seleccion(name: "Naranja Mecánica", country: Seleccion.Country.PaisesBajos, players : ["Von Cryuff","Van der Meer", "Robben"], director: "Fred Niels")
@@ -179,22 +216,13 @@ print(argentina.toString)
 
 var equipos = Mundial(seleccion: [argentina, brazil, holanda, espanya, francia, japon])
 
+var juegos = Game(equipoLocal: true, equipoVisitante: false, resultado: "0", selecciones: [japon, argentina])
+
+
+
 print(equipos.toString)
 
 
-/**7.- Crear una clase para representar los partidos entre selecciones, deberá contener
- atributos como equipo local, visitante y resultado como mínimo. Generar una lista
- aleatoria de partidos entre la lista de selecciones anteriores y hacer un print de este
- estilo por partido:
- Partido: España 3 - 1 Brasil*/
+print(juegos.toString)
 
-class Game {
-    var equipoLocal : Bool
-    var equipoVisitante : Bool
-    var equipoLocal : Bool
-    
-    init(equipoLocal : Bool, equipoLocal : Bool) {
-        
-    }
-    
-}
+
