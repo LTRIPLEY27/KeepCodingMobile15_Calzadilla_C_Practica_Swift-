@@ -187,3 +187,14 @@ print(equipos.toString)
  aleatoria de partidos entre la lista de selecciones anteriores y hacer un print de este
  estilo por partido:
  Partido: España 3 - 1 Brasil*/
+
+class Game {
+    var equipoLocal : Bool
+    var equipoVisitante : Bool
+    var equipoLocal : Bool
+    
+    init(equipoLocal : Bool, equipoLocal : Bool) {
+        
+    }
+    
+}
