@@ -3,11 +3,15 @@
    version = "3.0">
    <TimelineItems>
       <LoggerValueHistoryTimelineItem
-         documentLocation = "file:///Users/isadevs/Documents/practica_swift/PracticaSwift.playground#CharacterRangeLen=6&amp;CharacterRangeLoc=13725&amp;EndingColumnNumber=11&amp;EndingLineNumber=364&amp;StartingColumnNumber=5&amp;StartingLineNumber=364&amp;Timestamp=691874729.083629"
+         documentLocation = "file:///Users/isadevs/Documents/practica_swift/PracticaSwift.playground#CharacterRangeLen=7&amp;CharacterRangeLoc=13890&amp;EndingColumnNumber=12&amp;EndingLineNumber=368&amp;StartingColumnNumber=5&amp;StartingLineNumber=368&amp;Timestamp=691944951.083724"
          selectedRepresentationIndex = "0">
       </LoggerValueHistoryTimelineItem>
       <LoggerValueHistoryTimelineItem
-         documentLocation = "file:///Users/isadevs/Documents/practica_swift/PracticaSwift.playground#CharacterRangeLen=7&amp;CharacterRangeLoc=13409&amp;EndingColumnNumber=12&amp;EndingLineNumber=360&amp;StartingColumnNumber=5&amp;StartingLineNumber=360&amp;Timestamp=691874729.083788"
+         documentLocation = "file:///Users/isadevs/Documents/practica_swift/PracticaSwift.playground#CharacterRangeLen=25&amp;CharacterRangeLoc=14296&amp;EndingColumnNumber=0&amp;EndingLineNumber=375&amp;StartingColumnNumber=0&amp;StartingLineNumber=374&amp;Timestamp=691944951.0839061"
+         selectedRepresentationIndex = "0">
+      </LoggerValueHistoryTimelineItem>
+      <LoggerValueHistoryTimelineItem
+         documentLocation = "file:///Users/isadevs/Documents/practica_swift/PracticaSwift.playground#CharacterRangeLen=24&amp;CharacterRangeLoc=14297&amp;EndingColumnNumber=0&amp;EndingLineNumber=375&amp;StartingColumnNumber=1&amp;StartingLineNumber=374&amp;Timestamp=691944951.084017"
          selectedRepresentationIndex = "0">
       </LoggerValueHistoryTimelineItem>
    </TimelineItems>
