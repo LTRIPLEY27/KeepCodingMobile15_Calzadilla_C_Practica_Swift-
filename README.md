@@ -11,7 +11,7 @@
 ## Práctica iOS Swift
 
 
-<div align = "center"> ### Ejercicios </div>
+<div align = "center"> <h1>Ejercicios</h1> </div>
 
 1.- Calcular y generar una lista con los 100 primeros números primos y hacer un
 print de los últimos 10.
