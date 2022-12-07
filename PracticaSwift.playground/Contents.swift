@@ -12,7 +12,7 @@ var primos : [Int] = [2];    //  --- DECLARACION DE LA LISTA PARA SER MAS TACITO
 // LO INTENT{E DESDE {ESTA MANERA PERO NO S{E MUY BIEN INDICAR CONDICIONALES
 for i in 3 ... 541 where  i % 2 != 0  && i % i == 0  { primos.append(i) }
 
-/// VERIFICACION DE LOS 100 PRIMO
+/// VERIFICACION DE LOS 100 PRIMOS
 print(primos)
 
 // IMPRESIÓN DE LOS ÚLTIMOS 10 PRIMOS
@@ -44,8 +44,6 @@ print("\n \n La suma de los 50 primeros primos es igual \(suma())")
 
 var players: [String] = ["Vinicius", "Messi", "Ronaldo", "Pedri", "Mbappe","Modric", "Militao", "Morata", "Valverde", "Benzema", "Piqué" ]
 
-//var jugador = players.filter{ $0.contains {$0 == "a" || $0 == "e" || $0 == "i" || $0 == "o" || $0 == "u" }}
-
 var jugadores : [String] = []
 
 func vocalCounter()  -> [String] {
@@ -54,10 +52,8 @@ func vocalCounter()  -> [String] {
         for x in i where x == "a" || x == "e" || x == "i" || x == "o" || x == "u"  {
             cont += 1
         }
-        if cont > 2 {
-            //print("\n Jugadores con más de 2 vocales en su nombre : \(i)")
-            jugadores.append(i)
-        }
+        
+        cont > 2 ? jugadores.append(i) : nil;
     }
     
     return jugadores
@@ -117,6 +113,7 @@ class Member {
 // INSTANCIACIÓN DE CLASE
 var member = Member(name: "Messi", age: 25, tipo: Member.Tipo.Jugador)
 
+// IMPRESIÓN Y VERIFICACIÓN DE TODOS LOS ATRIBUTOS DE LA CLASE
 print(member.toString)
 
 /**6.- Crear las clases necesarias, con los atributos mínimos, para representar las
@@ -138,26 +135,52 @@ class Mundial {
     }
     
     
+    /**8.- Generar de forma aleatoria, dentro de la clase Mundial, un listado de grupos con
+     un máximo de 4 selecciones por grupo, se puede crear una clase nueva Grupo que
+     contenga el nombre del grupo, listado de participantes y listado de partidos. Por
+     ejemplo: Grupo A España, Brasil, Francia, Alemania.*/
+    
     // VARIABLE COMPUTADA QUE GENERA LOS EQUIPOS DE FORMA ALEATORIA
     var makeTeams : Void {
-        var group : Group = Group()
-
-        for i in 0 ... 3 {
-            group = Group()
+        
+        for i in 0 ... 4 {
+            // REINICIA EL ARRAY A CERO PARA VOLVER A ALMACENAR SÓLO 4
+            var group : Group = Group()
             var names: [Seleccion] = []
+            
+            // LIMITA A ÚNICAMENTE GRUPOS DE 4
             for _ in 0 ... 3 {
+                names = []
                 var random = Int.random(in: 0 ... seleccion.count)
                 names.append(seleccion[random])
                 seleccion.remove(at: random)
             }
-
+            
+            // CONFORMA EL GRUPO DE SOLO 4 SELECCIONES CONSTRUIDO EN EL FOR
             group = Group(nameGroup: "\(i)", members : seleccion, matchs: Game(equipoLocal: true, equipoVisitante: false))
             
+            // ADHIERE AL ARRAY DE ARRAYS
             grupo.append(group)
         }
         
         grupo.forEach{ print($0.members)}
     
+    }
+    
+    //EN TEORÍA FUNCIONA PERO ME DA PROBLEMAS EL ITERAR SOBRE TODO EL ARRAY DE ELEMENTOS, YA QUE USÉ ENUMERATED Y DEMÁS PERO FUE EN VANO, INVENTÉ DE ÉSTA MANERA Y ALGUNAS VECES FUNCIONA Y OTRA DIRECTAMENTE SALTA EL ERROR
+    /**10.- Generar los partidos del Mundial en cada grupo y calcular las dos primeras
+     selecciones de cada grupo y hacer un print con los clasificados.*/
+    func makeTheChampionShip() {
+        grupo.forEach{ print($0.makeMatch())}
+    
+        
+        let list = grupo.filter { x in
+            x.members.contains { i in
+                i.victory > 3
+            }
+        }
+        
+        print("Clasificados por Grupos  \(list)")
     }
     
     var toString : Void {
@@ -168,7 +191,7 @@ class Mundial {
     }
 }
 
-
+// MARK -  CLASE SELECCIÓN (SIGUE, EJERCICIO 6)
 // CLASE SELECCIÓN, COMPRENDER{A LA LISTA DE OBJETOS DE LA CLASE MUNDIAL
 class Seleccion {
 
@@ -201,6 +224,8 @@ class Seleccion {
  estilo por partido:
  Partido: España 3 - 1 Brasil*/
 
+
+// MARK -  CLASE GAME
 class Game {
     var equipoLocal : Bool
     var equipoVisitante : Bool
@@ -213,23 +238,10 @@ class Game {
 
     }
     
-    
-    
-   /* var match : String  {
-        var randomGoals1 : Int = Int.random(in: 0 ... 10)
-        var randomGoals2 : Int = Int.random(in: 0 ... 10)
+    var toString : String {
 
-        
-        //return "\n\nResultados : \(selecciones[0].country) - \(randomGoals1) - \(selecciones[1].country) \(randomGoals2)"
-        print("\n\nResultados : \(selecciones[0].country) - \(randomGoals1) - \(selecciones[1].country) \(randomGoals2)")
-        
-        return "\(selecciones[0].country)  \(selecciones[1].country)"
-    }*/
-    
-    /*var toString : String {
-
-        return "\n\nPartido \(selecciones[0].country) - \(selecciones[1].country) \n\nPais : \(selecciones[0].country) \nLocal : \(equipoLocal) \n\nPais : \(selecciones[1].country) \nVisitante \(equipoVisitante) \n\n \(match)"
-    }*/
+        return "\n\nPartido \nLocal : \(equipoLocal)  \nVisitante \(equipoVisitante) \n\n "
+    }
 }
 
 
@@ -238,6 +250,8 @@ class Game {
  contenga el nombre del grupo, listado de participantes y listado de partidos. Por
  ejemplo: Grupo A España, Brasil, Francia, Alemania.*/
 
+
+// MARK -  CLASE GRUPO
 class Group {
     
     var nameGroup : String
@@ -251,22 +265,42 @@ class Group {
         self.matchs = matchs
     }
     
+    
+/**9.- Para añadir a cada Grupo los puntos de cada selección habrá que contabilizar las
+ victorias con 3 puntos, empates con 1 y derrotas con 0. Añadir una función en la
+ clase Grupo que le pasemos una selección y nos devuelva sus puntos.*/
+    // FUNCION QUE CONTABILIZA Y ACTUALIZA EL PUNTAJE DE LAS SELECCIONES
     func makeMatch()
     {
         var randomGoals1 : Int = Int.random(in: 0 ... 10)
         var randomGoals2 : Int = Int.random(in: 0 ... 10)
         
-        if randomGoals1 > randomGoals2 {
-            members[0].victory += 3
-        }
-        if randomGoals1 == randomGoals2 {
-            members[0].victory += 1
-            members[1].victory += 1
-        } else {
-            members[1].victory += 3
-        }
+
+        // INTENT{E DE MIL MANERAS TOMAR EL INDICE PARA INCREMENTAR MIENTRAS ITERABA SOBRE EL ARRAY Y GENERAR LOS RESULTADOS PERO FUE IMPOSIBLE
+        //let inde = members.firstIndex(where: {$0 = 1})
+        //for i in inde{
+            if randomGoals1 > randomGoals2 {
+                members[0].victory += 3
+            }
+            if randomGoals1 == randomGoals2 {
+                members[0].victory += 1
+                members[1].victory += 1
+            } else {
+                members[1].victory += 3
+            }
+       // }
         
+    
         print("\n\nResultados : \(members[0].country) - \(randomGoals1) - \(members[1].country) \(randomGoals2)")
+    }
+    
+    
+    // FUNCIÓN QUE CHEQUEARÁ EL SCORE DE LA SELECCIÓN
+    func checkScore(name : Seleccion.Country)
+    {
+        for i in members  where i.country == name {
+            print("\n\nTabla de Puntaje  \nPais : \(i.country) \nPuntaje :  \(i.victory)");
+        }
     }
     
     var toString : String {
@@ -366,31 +400,25 @@ var corea = Seleccion(name: "Corea", country: Seleccion.Country.Corea, players :
 var equipos = Mundial(seleccion: [argentina, brazil, holanda, espanya, francia, japon, catar, arabia, alemania, australia, belgica, corea, canada, camerun, croacia, costa_rica, dinamarca, ecuador, gales, ghana, iran, inglaterra, mexico, marruecos, polonia, portugal, suiza, serbia, senegal, usa, uruguay, tunez])
 
 
+
+// MARK -  LLAMADO A LOS MÉTODOS DESDE LA CLASE MUNDIAL (CONTENEDOR E INICIALIZADOR DE TODAS LAS DEMÁS CLASES)
+
 print(equipos.seleccion.count)
 
 equipos.makeTeams
 
 equipos.grupo[0].makeMatch();
 
+
+
 print(equipos.seleccion[0].victory)
 print(equipos.seleccion[1].victory)
 
-print("Cantidad de Grupos de 4 participantes en la copa: \(equipos.grupo.count)")
-//equipos.makeTeams.self
+print("\nCantidad de Grupos de 4 participantes en la copa: \(equipos.grupo.count)")
 
+equipos.grupo[0].checkScore(name: Seleccion.Country.Gales)
 
-//juegos.resultados.append(juegos.match)
+equipos.makeTheChampionShip();
 
-
-//print(equipos.toString)
-
-
-//print(juegos.toString)
-
-
-//juegos.resultados.forEach{ print($0)}
-
-
-equipos.grupo.forEach{ print(" aca \($0.toString)")}
 
 
