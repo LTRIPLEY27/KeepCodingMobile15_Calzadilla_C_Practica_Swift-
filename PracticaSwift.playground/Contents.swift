@@ -130,46 +130,35 @@ class Mundial {
     
     var seleccion : [Seleccion]
     var grupo : [Group]
-    //var group : Group
     
-    init(seleccion : [Seleccion] = [], grupo : [Group] = []/*, group : Group = Group()*/){
+    init(seleccion : [Seleccion] = [], grupo : [Group] = []){
         self.seleccion = seleccion
         self.grupo = grupo
-        //self.group = group
+
     }
     
-    /**     //revar count = 0
-     //var recipe : Group = Group()
-     var names : [String] = []
-     for i in 0 ... 3 {
-         //names.append(seleccion[Int.random(in: 0 ... 32)].name)*/
+    
+    // VARIABLE COMPUTADA QUE GENERA LOS EQUIPOS DE FORMA ALEATORIA
     var makeTeams : Void {
-       //var names: Set <String> = []
         var group : Group = Group()
-        for i in 0 ... 4 {
+
+        for i in 0 ... 3 {
             group = Group()
-            var names: Set <String> = []
+            var names: [Seleccion] = []
             for _ in 0 ... 3 {
                 var random = Int.random(in: 0 ... seleccion.count)
-                names.insert(seleccion[random].name)
+                names.append(seleccion[random])
                 seleccion.remove(at: random)
             }
+
+            group = Group(nameGroup: "\(i)", members : seleccion, matchs: Game(equipoLocal: true, equipoVisitante: false))
             
-            //group.nameGroup = "A"
-            //group.members = names
-            //group.matchs = [Game(equipoLocal: true, equipoVisitante: false, selecciones: [japon, argentina])]
-            group = Group(nameGroup: "A", members : names, matchs: [Game(equipoLocal: true, equipoVisitante: false, selecciones: [japon, argentina])])
-                //grupo.append(Group(nameGroup: "A", members : names, matchs: [Game(equipoLocal: true, equipoVisitante: false, selecciones: [japon, argentina])]))
-                //grupo.append(Group(nameGroup: "A", members : names, matchs: [Game(equipoLocal: true, equipoVisitante: false, selecciones: [japon, argentina])]))
-           
-                grupo.append(group)
-            
+            grupo.append(group)
         }
-        //grupo.append(group)
-        grupo.forEach{ print($0.toString)}
+        
+        grupo.forEach{ print($0.members)}
+    
     }
-    
-    
     
     var toString : Void {
         print("\n\nParticipantes :")
@@ -182,19 +171,18 @@ class Mundial {
 
 // CLASE SELECCIÓN, COMPRENDER{A LA LISTA DE OBJETOS DE LA CLASE MUNDIAL
 class Seleccion {
-    var name : String
+
     var country : Country
     var players : [String]
-    var director : String
-    //var partidos : Game  // --> ejercicio 7
+    var victory : Int
+
     
-    init (name : String = "", country : Country, players : [String] = [],director : String = ""/*, partidos : Game*/){
+    init (name : String = "", country : Country, players : [String] = [], victory : Int = 0){
         
-        self.name = name
         self.country = country
         self.players = players
-        self.director = director
-        //self.partidos = partidos
+        self.victory = victory
+
     }
     
     enum Country {
@@ -203,7 +191,7 @@ class Seleccion {
     
     
     // INTERPOLACIÓN DE STRING PARA RETORNAR TODOS LOS ATRIBUTOS
-    public var toString : String { return "\n\nSelección : \(name) \n - País : \(country) \n - Jugadores : \(players) \n - Técnico : \(director) \nPartidos "} //\(partidos.toString)
+    public var toString : String { return "\n\nSelección : \(country) \n - Jugadores : \(players) "}
 }
 
 
@@ -217,38 +205,31 @@ class Game {
     var equipoLocal : Bool
     var equipoVisitante : Bool
     var resultados : [String] = []
-    var selecciones : [Seleccion]
     
-    init(equipoLocal : Bool = false, equipoVisitante : Bool = false,  selecciones : [Seleccion]) {
+    init(equipoLocal : Bool = false, equipoVisitante : Bool = false) {
 
         self.equipoLocal = equipoLocal
         self.equipoVisitante = equipoVisitante
-        //self.resultados.append(resultados)
-        self.selecciones = selecciones
 
     }
     
-    /*var resultados : [String]  {
-        set(matches) {
-            self.resultados = resultados.append(matches)
-        }
-        get {
-            return resultados
-        }
-        
-    }*/
     
-    var match : String  {
+    
+   /* var match : String  {
         var randomGoals1 : Int = Int.random(in: 0 ... 10)
         var randomGoals2 : Int = Int.random(in: 0 ... 10)
 
-        return "\n\nResultados : \(selecciones[0].country) - \(randomGoals1) - \(selecciones[1].country) \(randomGoals2)"
-    }
+        
+        //return "\n\nResultados : \(selecciones[0].country) - \(randomGoals1) - \(selecciones[1].country) \(randomGoals2)"
+        print("\n\nResultados : \(selecciones[0].country) - \(randomGoals1) - \(selecciones[1].country) \(randomGoals2)")
+        
+        return "\(selecciones[0].country)  \(selecciones[1].country)"
+    }*/
     
-    var toString : String {
+    /*var toString : String {
 
         return "\n\nPartido \(selecciones[0].country) - \(selecciones[1].country) \n\nPais : \(selecciones[0].country) \nLocal : \(equipoLocal) \n\nPais : \(selecciones[1].country) \nVisitante \(equipoVisitante) \n\n \(match)"
-    }
+    }*/
 }
 
 
@@ -260,14 +241,32 @@ class Game {
 class Group {
     
     var nameGroup : String
-    var members: Set <String> = []
-    var matchs : [Game]
-    
-    init(nameGroup : String = "", members: Set <String> = [], matchs : [Game] = []) {
+    var members: [Seleccion]
+    var matchs : Game
+
+    init(nameGroup : String = "", members: [Seleccion] = [], matchs : Game = Game()) {
         
         self.nameGroup = nameGroup
         self.members = members
         self.matchs = matchs
+    }
+    
+    func makeMatch()
+    {
+        var randomGoals1 : Int = Int.random(in: 0 ... 10)
+        var randomGoals2 : Int = Int.random(in: 0 ... 10)
+        
+        if randomGoals1 > randomGoals2 {
+            members[0].victory += 3
+        }
+        if randomGoals1 == randomGoals2 {
+            members[0].victory += 1
+            members[1].victory += 1
+        } else {
+            members[1].victory += 3
+        }
+        
+        print("\n\nResultados : \(members[0].country) - \(randomGoals1) - \(members[1].country) \(randomGoals2)")
     }
     
     var toString : String {
@@ -278,103 +277,109 @@ class Group {
 
 
 
-
 // MARK - INSTANCIACION DE CLASES  -->  {SELECCIONES}
 
 // MARK - GRUPOS  -->  A
-var holanda = Seleccion(name: "Paises Bajos", country: Seleccion.Country.PaisesBajos, players : ["Von Cryuff","Van der Meer", "Robben"], director: "Fred Niels")
+var holanda = Seleccion(name: "Paises Bajos", country: Seleccion.Country.PaisesBajos, players : ["Von Cryuff","Van der Meer", "Robben"])
 
-var senegal = Seleccion(name: "Senegal", country: Seleccion.Country.Senegal, players : ["Von Cryuff","Van der Meer", "Robben"], director: "Fred Niels")
+var senegal = Seleccion(name: "Senegal", country: Seleccion.Country.Senegal, players : ["Von Cryuff","Van der Meer", "Robben"])
 
-var ecuador = Seleccion(name: "Ecuador", country: Seleccion.Country.Ecuador, players : ["Von Cryuff","Van der Meer", "Robben"], director: "Fred Niels")
+var ecuador = Seleccion(name: "Ecuador", country: Seleccion.Country.Ecuador, players : ["Von Cryuff","Van der Meer", "Robben"])
 
-var catar = Seleccion(name: "Catár", country: Seleccion.Country.Catar, players : ["Von Cryuff","Van der Meer", "Robben"], director: "Fred Niels")
+var catar = Seleccion(name: "Catár", country: Seleccion.Country.Catar, players : ["Von Cryuff","Van der Meer", "Robben"])
 
 // MARK - GRUPOS  -->  B
 
 
-var inglaterra = Seleccion(name: "Inglaterra", country: Seleccion.Country.Inglaterra, players : ["Messi","Lautaro", "Di maria"], director: "Luis Scaloni")
+var inglaterra = Seleccion(name: "Inglaterra", country: Seleccion.Country.Inglaterra, players : ["Messi","Lautaro", "Di maria"])
 
-var usa = Seleccion(name: "Estados Unidos", country: Seleccion.Country.EstadosUnidos, players : ["Messi","Lautaro", "Di maria"], director: "Luis Scaloni")
+var usa = Seleccion(name: "Estados Unidos", country: Seleccion.Country.EstadosUnidos, players : ["Messi","Lautaro", "Di maria"])
 
-var iran = Seleccion(name: "Irán", country: Seleccion.Country.Iran, players : ["Messi","Lautaro", "Di maria"], director: "Luis Scaloni")
+var iran = Seleccion(name: "Irán", country: Seleccion.Country.Iran, players : ["Messi","Lautaro", "Di maria"])
 
-var gales = Seleccion(name: "Gales", country: Seleccion.Country.Gales, players : ["Messi","Lautaro", "Di maria"], director: "Luis Scaloni")
+var gales = Seleccion(name: "Gales", country: Seleccion.Country.Gales, players : ["Messi","Lautaro", "Di maria"])
 
 // MARK - GRUPOS  -->  C
 
-var argentina = Seleccion(name: "Argentina", country: Seleccion.Country.Argentina, players : ["Messi","Lautaro", "Di maria"], director: "Luis Scaloni")
+var argentina = Seleccion(name: "Argentina", country: Seleccion.Country.Argentina, players : ["Messi","Lautaro", "Di maria"])
 
-var polonia = Seleccion(name: "Polonia", country: Seleccion.Country.Polonia, players : ["Messi","Lautaro", "Di maria"], director: "Luis Scaloni")
+var polonia = Seleccion(name: "Polonia", country: Seleccion.Country.Polonia, players : ["Messi","Lautaro", "Di maria"])
 
-var mexico = Seleccion(name: "Mexico", country: Seleccion.Country.Mexico, players : ["Messi","Lautaro", "Di maria"], director: "Luis Scaloni")
+var mexico = Seleccion(name: "Mexico", country: Seleccion.Country.Mexico, players : ["Messi","Lautaro", "Di maria"])
 
-var arabia = Seleccion(name: "Arabia", country: Seleccion.Country.Arabia, players : ["Messi","Lautaro", "Di maria"], director: "Luis Scaloni")
+var arabia = Seleccion(name: "Arabia", country: Seleccion.Country.Arabia, players : ["Messi","Lautaro", "Di maria"])
 
 // MARK - GRUPOS  -->  D
 
-var francia = Seleccion(name: "Francia", country: Seleccion.Country.Francia, players : ["Neymar","Rodrygo", "Faustinho"], director: "Ronaldinho")
+var francia = Seleccion(name: "Francia", country: Seleccion.Country.Francia, players : ["Neymar","Rodrygo", "Faustinho"])
 
-var australia = Seleccion(name: "Australia", country: Seleccion.Country.Australia, players : ["Neymar","Rodrygo", "Faustinho"], director: "Ronaldinho")
+var australia = Seleccion(name: "Australia", country: Seleccion.Country.Australia, players : ["Neymar","Rodrygo", "Faustinho"])
 
-var tunez = Seleccion(name: "Tunez", country: Seleccion.Country.Tunez, players : ["Neymar","Rodrygo", "Faustinho"], director: "Ronaldinho")
+var tunez = Seleccion(name: "Tunez", country: Seleccion.Country.Tunez, players : ["Neymar","Rodrygo", "Faustinho"])
 
-var dinamarca = Seleccion(name: "Dinamarca", country: Seleccion.Country.Dinamarca, players : ["Neymar","Rodrygo", "Faustinho"], director: "Ronaldinho")
+var dinamarca = Seleccion(name: "Dinamarca", country: Seleccion.Country.Dinamarca, players : ["Neymar","Rodrygo", "Faustinho"])
 
 
 // MARK - GRUPOS  -->  E
-var japon = Seleccion(name: "Japón", country: Seleccion.Country.Japon, players : ["Yakusa","Fukunaga", "Mishi"], director: "Tadeo Hidetora")
+var japon = Seleccion(name: "Japón", country: Seleccion.Country.Japon, players : ["Yakusa","Fukunaga", "Mishi"])
 
-var espanya = Seleccion(name: "España", country: Seleccion.Country.Espana, players : ["Pedri","Morata", "Casillas"], director: "Luis Stream")
+var espanya = Seleccion(name: "España", country: Seleccion.Country.Espana, players : ["Pedri","Morata", "Casillas"])
 
-var alemania = Seleccion(name: "Alemania", country: Seleccion.Country.Alemania, players : ["Neymar","Rodrygo", "Faustinho"], director: "Ronaldinho")
+var alemania = Seleccion(name: "Alemania", country: Seleccion.Country.Alemania, players : ["Neymar","Rodrygo", "Faustinho"])
 
-var costa_rica = Seleccion(name: "Costa Rica", country: Seleccion.Country.CostaRica, players : ["Neymar","Rodrygo", "Faustinho"], director: "Ronaldinho")
+var costa_rica = Seleccion(name: "Costa Rica", country: Seleccion.Country.CostaRica, players : ["Neymar","Rodrygo", "Faustinho"])
 
 // MARK - GRUPOS  -->  F
 
-var marruecos = Seleccion(name: "Marruecos", country: Seleccion.Country.Marruecos, players : ["Zidane","Mbappé", "Cherrie"], director: "Luc Besson")
+var marruecos = Seleccion(name: "Marruecos", country: Seleccion.Country.Marruecos, players : ["Zidane","Mbappé", "Cherrie"])
 
-var croacia = Seleccion(name: "Croacia", country: Seleccion.Country.Croacia, players : ["Neymar","Rodrygo", "Faustinho"], director: "Ronaldinho")
+var croacia = Seleccion(name: "Croacia", country: Seleccion.Country.Croacia, players : ["Neymar","Rodrygo", "Faustinho"])
 
-var belgica = Seleccion(name: "Bélgica", country: Seleccion.Country.Belgica, players : ["Neymar","Rodrygo", "Faustinho"], director: "Ronaldinho")
+var belgica = Seleccion(name: "Bélgica", country: Seleccion.Country.Belgica, players : ["Neymar","Rodrygo", "Faustinho"])
 
-var canada = Seleccion(name: "Canadá", country: Seleccion.Country.Canada, players : ["Neymar","Rodrygo", "Faustinho"], director: "Ronaldinho")
+var canada = Seleccion(name: "Canadá", country: Seleccion.Country.Canada, players : ["Neymar","Rodrygo", "Faustinho"])
 
 
 // MARK - GRUPOS  -->  G
 
-var brazil = Seleccion(name: "Brazil", country: Seleccion.Country.Brazil, players : ["Neymar","Rodrygo", "Faustinho"], director: "Ronaldinho")
+var brazil = Seleccion(name: "Brazil", country: Seleccion.Country.Brazil, players : ["Neymar","Rodrygo", "Faustinho"])
 
-var serbia = Seleccion(name: "Serbia", country: Seleccion.Country.Serbia, players : ["Neymar","Rodrygo", "Faustinho"], director: "Ronaldinho")
+var serbia = Seleccion(name: "Serbia", country: Seleccion.Country.Serbia, players : ["Neymar","Rodrygo", "Faustinho"])
 
-var suiza = Seleccion(name: "Suiza", country: Seleccion.Country.Suiza, players : ["Neymar","Rodrygo", "Faustinho"], director: "Ronaldinho")
+var suiza = Seleccion(name: "Suiza", country: Seleccion.Country.Suiza, players : ["Neymar","Rodrygo", "Faustinho"])
 
-var camerun = Seleccion(name: "Camerún", country: Seleccion.Country.Camerun, players : ["Neymar","Rodrygo", "Faustinho"], director: "Ronaldinho")
+var camerun = Seleccion(name: "Camerún", country: Seleccion.Country.Camerun, players : ["Neymar","Rodrygo", "Faustinho"])
 
 // MARK - GRUPOS  -->  H
 
-var portugal = Seleccion(name: "Portugal", country: Seleccion.Country.Portugal, players : ["Neymar","Rodrygo", "Faustinho"], director: "Ronaldinho")
 
-var ghana = Seleccion(name: "Ghana", country: Seleccion.Country.Ghana, players : ["Neymar","Rodrygo", "Faustinho"], director: "Ronaldinho")
+var portugal = Seleccion(name: "Portugal", country: Seleccion.Country.Portugal, players : ["Neymar","Rodrygo", "Faustinho"])
 
-var uruguay = Seleccion(name: "Uruguay", country: Seleccion.Country.Uruguay, players : ["Neymar","Rodrygo", "Faustinho"], director: "Ronaldinho")
+var ghana = Seleccion(name: "Ghana", country: Seleccion.Country.Ghana, players : ["Neymar","Rodrygo", "Faustinho"])
 
-var corea = Seleccion(name: "Corea", country: Seleccion.Country.Corea, players : ["Neymar","Rodrygo", "Faustinho"], director: "Ronaldinho")
+var uruguay = Seleccion(name: "Uruguay", country: Seleccion.Country.Uruguay, players : ["Neymar","Rodrygo", "Faustinho"])
 
+var corea = Seleccion(name: "Corea", country: Seleccion.Country.Corea, players : ["Neymar","Rodrygo", "Faustinho"])
 
-
-// MARK - MUNDIAL  -->  B
+// MARK - MUNDIAL  -->
 
 var equipos = Mundial(seleccion: [argentina, brazil, holanda, espanya, francia, japon, catar, arabia, alemania, australia, belgica, corea, canada, camerun, croacia, costa_rica, dinamarca, ecuador, gales, ghana, iran, inglaterra, mexico, marruecos, polonia, portugal, suiza, serbia, senegal, usa, uruguay, tunez])
 
 
+print(equipos.seleccion.count)
 
-var juegos = Game(equipoLocal: true, equipoVisitante: false, selecciones: [japon, argentina])
+equipos.makeTeams
 
-print(equipos.makeTeams)
+equipos.grupo[0].makeMatch();
 
-juegos.resultados.append(juegos.match)
+print(equipos.seleccion[0].victory)
+print(equipos.seleccion[1].victory)
+
+print("Cantidad de Grupos de 4 participantes en la copa: \(equipos.grupo.count)")
+//equipos.makeTeams.self
+
+
+//juegos.resultados.append(juegos.match)
 
 
 //print(equipos.toString)
@@ -386,6 +391,6 @@ juegos.resultados.append(juegos.match)
 //juegos.resultados.forEach{ print($0)}
 
 
-//equipos.grupo.forEach{ print(" aca \($0.toString)")}
+equipos.grupo.forEach{ print(" aca \($0.toString)")}
 
 
